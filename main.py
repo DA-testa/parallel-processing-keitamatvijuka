@@ -1,65 +1,27 @@
-class MinHeap:
-    def __init__(self):
-        self.heap = []
+def parallel_processing(n, m, data):
+    output = []
+    threads = [(0, i) for i in range(n)]
+    heapq.heapify(threads)
+    current_time = 0
 
-    def parent(self, i):
-        return (i - 1) // 2
+    for job_index, job_time in enumerate(data):
+        start_time, thread_index = heapq.heappop(threads)
+        if current_time > start_time:
+            current_time = start_time
+        output.append((thread_index, current_time))
+        current_time += job_time
+        heapq.heappush(threads, (current_time, thread_index))
 
-    def left_child(self, i):
-        return 2 * i + 1
-
-    def right_child(self, i):
-        return 2 * i + 2
-
-    def sift_down(self, i, swaps):
-        min_index = i
-        left = self.left_child(i)
-        if left < len(self.heap) and self.heap[left] < self.heap[min_index]:
-            min_index = left
-        right = self.right_child(i)
-        if right < len(self.heap) and self.heap[right] < self.heap[min_index]:
-            min_index = right
-        if i != min_index:
-            swaps.append((i, min_index))
-            self.heap[i], self.heap[min_index] = self.heap[min_index], self.heap[i]
-            self.sift_down(min_index, swaps)
-
-    def build_heap(self, data, swaps):
-        self.heap = data[:]
-        for i in range(len(data)//2, -1, -1):
-            self.sift_down(i, swaps)
-
-    def get_heap(self):
-        return self.heap
-
-
-def build_heap(data):
-    swaps = []
-    min_heap = MinHeap()
-    min_heap.build_heap(data, swaps)
-    return swaps
-
+    return output
 
 def main():
-    data=[]
-    Input = input()
-    if "I" in Input:
-        n = int(input())
-        data = list(map(int, input().split()))
-        assert len(data) == n
+    n, m = map(int, input().split())
+    data = list(map(int, input().split()))
 
-    if "F" in Input:
-        filepath = "tests/" + input()
-        with open(filepath, 'r') as file:
-            n = int(file.readline().strip())
-            data = list(map(int, file.readline().strip().split()))
-            assert len(data) == n
+    result = parallel_processing(n, m, data)
 
-    swaps = build_heap(data)
-    print(len(swaps))
-    for i, j in swaps:
-        print(i, j)
-
+    for thread_index, start_time in result:
+        print(thread_index, start_time)
 
 if __name__ == "__main__":
     main()
