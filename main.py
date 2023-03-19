@@ -41,6 +41,7 @@ def build_heap(data):
 
 
 def main():
+    data=[]
     Input = input()
     if "I" in Input:
         n = int(input())
