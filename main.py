@@ -1,3 +1,5 @@
+#python
+# 221RDB506 Keita Matvijuka 13. Grupa
 def parallel_processing(n, m, data):
     output = []
     threads = [(0, i) for i in range(n)]
