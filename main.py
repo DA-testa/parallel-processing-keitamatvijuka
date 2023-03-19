@@ -1,15 +1,4 @@
-# python3
-# Keita Matvijuka 221RDB506 13. Grupa
-
-
-
-def build_heap(data):
-    swaps = []
-    min_heap = MinHeap()
-    min_heap.build_heap(data, swaps)
-    return swaps
-            
-            class MinHeap:
+class MinHeap:
     def __init__(self):
         self.heap = []
 
@@ -43,6 +32,14 @@ def build_heap(data):
     def get_heap(self):
         return self.heap
 
+
+def build_heap(data):
+    swaps = []
+    min_heap = MinHeap()
+    min_heap.build_heap(data, swaps)
+    return swaps
+
+
 def main():
     Input = input()
     if "I" in Input:
@@ -65,4 +62,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
