@@ -1,31 +1,68 @@
 # python3
+# Keita Matvijuka 221RDB506 13. Grupa
 
-def parallel_processing(n, m, data):
-    output = []
-    # TODO: write the function for simulating parallel tasks, 
-    # create the output pairs
+class MinHeap:
+    def __init__(self):
+        self.heap = []
 
-    return output
+    def parent(self, i):
+        return (i - 1) // 2
+
+    def left_child(self, i):
+        return 2 * i + 1
+
+    def right_child(self, i):
+        return 2 * i + 2
+
+    def sift_down(self, i, swaps):
+        min_index = i
+        left = self.left_child(i)
+        if left < len(self.heap) and self.heap[left] < self.heap[min_index]:
+            min_index = left
+        right = self.right_child(i)
+        if right < len(self.heap) and self.heap[right] < self.heap[min_index]:
+            min_index = right
+        if i != min_index:
+            swaps.append((i, min_index))
+            self.heap[i], self.heap[min_index] = self.heap[min_index], self.heap[i]
+            self.sift_down(min_index, swaps)
+
+    def build_heap(self, data, swaps):
+        self.heap = data[:]
+        for i in range(len(data)//2, -1, -1):
+            self.sift_down(i, swaps)
+
+    def get_heap(self):
+        return self.heap
+
+
+def build_heap(data):
+    swaps = []
+    min_heap = MinHeap()
+    min_heap.build_heap(data, swaps)
+    return swaps
+
 
 def main():
-    # TODO: create input from keyboard
-    # input consists of two lines
-    # first line - n and m
-    # n - thread count 
-    # m - job count
-    n = 0
-    m = 0
+    Input = input()
+    if "I" in Input:
+        n = int(input())
+        data = list(map(int, input().split()))
+        assert len(data) == n
 
-    # second line - data 
-    # data - contains m integers t(i) - the times in seconds it takes any thread to process i-th job
-    data = []
+    if "F" in Input:
+        filepath = "tests/" + input()
+        with open(filepath, 'r') as file:
+            n = int(file.readline().strip())
+            data = list(map(int, file.readline().strip().split()))
+            assert len(data) == n
 
-    # TODO: create the function
-    result = parallel_processing(n,m,data)
-    
-    # TODO: print out the results, each pair in it's own line
-
+    swaps = build_heap(data)
+    print(len(swaps))
+    for i, j in swaps:
+        print(i, j)
 
 
 if __name__ == "__main__":
     main()
+
